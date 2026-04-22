@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+
+// ─── TEMA DARK (padrão) ───────────────────────────────────────────────────────
+:root {
+  // Backgrounds
+  --bg-base        : #0B101B;
+  --bg-surface     : #131820;
+  --bg-elevated    : #1A2130;
+  --bg-overlay     : rgba(255, 255, 255, 0.04);
+  --bg-card        : rgba(255, 255, 255, 0.03);
+  --bg-card-inner  : rgba(255, 255, 255, 0.04);
+  --bg-sidebar     : #0d1525;
+  --bg-header      : #0d1525;
+  --bg-page        : #0b101b;
+  --bg-dialog      : #0f1827;
+  --bg-field       : rgba(0, 0, 0, 0.28);
+  --bg-table-row   : rgba(255, 255, 255, 0.025);
+
+  // Textos
+  --text-primary   : #FFFFFF;
+  --text-secondary : #8A9BB5;
+  --text-muted     : #4A5568;
+  --text-label     : rgba(196, 210, 231, 0.55);
+  --text-value     : #e8f0fc;
+
+  // Bordas
+  --border-subtle  : rgba(255, 255, 255, 0.07);
+  --border-default : rgba(255, 255, 255, 0.12);
+  --border-focus   : rgba(0, 209, 255, 0.5);
+
+  // Marca (accent)
+  --color-primary   : #00D1FF;
+  --color-secondary : #00F5D4;
+  --color-tertiary  : #9D50FF;
+  --color-danger    : #FF4D6A;
+  --color-warning   : #FFB547;
+
+  // Efeitos
+  --shadow-card    : none;
+  --glow-primary   : 0 0 24px rgba(0, 209, 255, 0.18);
+  --glow-secondary : 0 0 24px rgba(0, 245, 212, 0.18);
+  --glow-tertiary  : 0 0 24px rgba(157, 80, 255, 0.18);
+
+  // Tipografia
+  --font-headline  : 'Manrope', sans-serif;
+  --font-body      : 'Inter', sans-serif;
+
+  // Raios
+  --radius-sm  : 8px;
+  --radius-md  : 12px;
+  --radius-lg  : 16px;
+  --radius-xl  : 24px;
+}
+
+// ─── TEMA LIGHT ───────────────────────────────────────────────────────────────
+[data-theme='light'] {
+
+  --bg-base        : #E4E8F0;   // fundo raiz do html/body
+  --bg-surface     : #F0F3F8;   // superfícies elevadas (menus, popovers)
+  --bg-elevated    : #D8DCE6;   // elemento acima do card
+  --bg-overlay     : rgba(0, 0, 0, 0.04);
+  --bg-card        : #F4F6FB;   // cards principais
+  --bg-card-inner  : #ECEEF5;   // cards aninhados (info, stat, security)
+  --bg-sidebar     : #F4F6FB;   // barra lateral
+  --bg-header      : #F4F6FB;   // barra superior
+  --bg-page        : #E4E8F0;   // fundo das páginas do dashboard
+  --bg-dialog      : #F4F6FB;   // janelas modais
+  --bg-field       : rgba(0, 0, 0, 0.045); // campos de input
+  --bg-table-row   : rgba(0, 0, 0, 0.02);
+
+  // Textos  ← ajuste aqui para legibilidade
+  --text-primary   : #0F1729;   // título e conteúdo principal
+  --text-secondary : #2D3A52;   // texto de suporte
+  --text-muted     : #7B8BA8;   // placeholders, datas, meta
+  --text-label     : #7B8BA8;   // labels de campo/coluna
+  --text-value     : #0F1729;   // valores numéricos e destacados
+
+  // Bordas
+  --border-subtle  : #D0D5E2;
+  --border-default : #B8BFD0;
+  --border-focus   : rgba(0, 153, 200, 0.5);
+
+  // Marca — versão mais escura para contraste no claro
+  --color-primary  : #0085B0;
+  --color-secondary: #00B89A;
+  --color-danger   : #D63B55;
+  --color-warning  : #C98A00;
+
+  // Efeitos
+  --shadow-card    : 0 2px 8px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06);
+  --glow-primary   : none;
+
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: opacity 0.2s;
+  &:hover { opacity: 0.8; }
+}
+
+// ─── SCROLLBAR ────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 3px;
+  &:hover { background: var(--color-primary); }
+}
+
+// ─── QUASAR OVERRIDES (globais — ambos os temas) ───────────────────────────────
+.q-field--outlined .q-field__control {
+  background: var(--bg-field) !important;
+  border-radius: var(--radius-md) !important;
+
+  &:before {
+    border-color: var(--border-default) !important;
+    border-radius: var(--radius-md) !important;
+  }
+}
+
+.q-field--outlined.q-field--focused .q-field__control:before {
+  border-color: var(--color-primary) !important;
+  box-shadow: var(--glow-primary);
+}
+
+.q-field__label   { color: var(--text-secondary) !important; }
+.q-field__native,
+.q-field__input   { color: var(--text-primary) !important; }
+.q-field__prepend .q-icon,
+.q-field__append .q-icon { color: var(--text-muted) !important; }
+
+.q-field--focused .q-field__prepend .q-icon,
+.q-field--focused .q-field__append .q-icon { color: var(--color-primary) !important; }
+
+// ─── BOTÃO PRIMARY CUSTOMIZADO ─────────────────────────────────────────────────
+.btn-primary {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)) !important;
+  color: #fff !important;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-md) !important;
+  transition: all 0.25s ease;
+  box-shadow: var(--glow-primary);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 32px rgba(0, 209, 255, 0.3);
+  }
+
+  &:active { transform: translateY(0); }
+}
+
+// ─── PÁGINA DE AUTH — sempre dark, independente do tema ───────────────────────
+.auth-page {
+  background: linear-gradient(180deg, #07111f 0%, #040b17 100%) !important;
+
+  --text-primary   : #FFFFFF !important;
+  --text-secondary : #8A9BB5 !important;
+  --text-muted     : #4A5568 !important;
+  --bg-page        : transparent !important;
+
+  &.q-page { background: linear-gradient(180deg, #07111f 0%, #040b17 100%) !important; }
+}
+
+// ─── LIGHT THEME — OVERRIDES ESPECÍFICOS DO QUASAR ───────────────────────────
+[data-theme='light'] {
+  .q-layout            { background: var(--bg-page) !important; }
+  .q-page              { background: var(--bg-page) !important; }
+  .q-page-container    { background: var(--bg-page) !important; }
+  .q-drawer            { background: var(--bg-sidebar) !important; border-right: 1px solid var(--border-subtle) !important; box-shadow: 2px 0 8px rgba(0,0,0,0.06) !important; }
+  .q-header            { background: var(--bg-header) !important; border-bottom: 1px solid var(--border-subtle) !important; box-shadow: 0 1px 4px rgba(0,0,0,0.07) !important; }
+  .q-toolbar           { color: var(--text-primary) !important; }
+
+  // Cards
+  .section-card,
+  .q-card { box-shadow: var(--shadow-card) !important; }
+
+  // Inputs
+  .q-field--outlined .q-field__control      { background: var(--bg-field) !important; }
+  .q-field--outlined .q-field__control:before { border-color: var(--border-default) !important; }
+  .q-field--outlined.q-field--focused .q-field__control:before {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(0,133,176,0.12) !important;
+  }
+  .q-field__label                             { color: var(--text-secondary) !important; }
+  .q-field__native, .q-field__input           { color: var(--text-primary) !important; }
+  .q-field__prepend .q-icon,
+  .q-field__append .q-icon                    { color: var(--text-muted) !important; }
+  .q-field--focused .q-field__prepend .q-icon,
+  .q-field--focused .q-field__append .q-icon  { color: var(--color-primary) !important; }
+
+  // Tabela
+  .q-table__container                         { background: var(--bg-card) !important; box-shadow: var(--shadow-card) !important; border-radius: var(--radius-lg) !important; }
+  .q-table thead tr                            { background: var(--bg-card-inner) !important; }
+  .q-table thead th                            { color: var(--text-label) !important; border-bottom: 1px solid var(--border-subtle) !important; font-weight: 700; }
+  .q-table tbody tr                            { background: var(--bg-card) !important; }
+  .q-table tbody tr:hover                      { background: var(--bg-card-inner) !important; }
+  .q-table tbody td                            { color: var(--text-primary) !important; border-bottom: 1px solid var(--border-subtle) !important; }
+
+  // Menu / dropdown
+  .q-menu             { background: var(--bg-surface) !important; color: var(--text-primary) !important; border: 1px solid var(--border-subtle) !important; box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important; }
+  .q-item             { color: var(--text-secondary) !important; }
+  .q-item:hover,
+  .q-item--active     { background: var(--bg-overlay) !important; color: var(--text-primary) !important; }
+  .q-item__label      { color: var(--text-primary) !important; }
+  .q-item__label--caption { color: var(--text-muted) !important; }
+  .q-separator        { background: var(--border-subtle) !important; }
+
+  // Dialog
+  .q-dialog .q-card   { background: var(--bg-dialog) !important; border: 1px solid var(--border-subtle) !important; box-shadow: 0 20px 60px rgba(0,0,0,0.14) !important; }
+
+  // Misc
+  .q-toggle__inner    { opacity: 0.8; }
+  .q-pagination .q-btn { color: var(--text-secondary) !important; }
+  .q-notification     { background: var(--bg-surface) !important; color: var(--text-primary) !important; box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important; }
+  .q-notification.bg-positive,
+  .q-notification--standard.bg-positive { background: #07311f !important; color: #6ee8b0 !important; }
+  .q-notification.bg-negative,
+  .q-notification--standard.bg-negative { background: #3d0d18 !important; color: #f0a0b0 !important; }
+  .q-notification.bg-info,
+  .q-notification--standard.bg-info     { background: #072040 !important; color: #90ccf0 !important; }
+  .q-badge            { font-weight: 700; }
+
+  // Sidebar — item ativo
+  .nav-item--active { background: rgba(0, 133, 176, 0.1) !important; }
+
+  // Scrollbar
+  ::-webkit-scrollbar-track { background: var(--bg-base); }
+  ::-webkit-scrollbar-thumb { background: var(--border-default); }
+}

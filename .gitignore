@@ -1,0 +1,21 @@
+# Dependências
+backend/vendor/
+frontend/node_modules/
+
+# Envs — apenas o .env.example é versionado (na raiz)
+.env
+backend/.env
+frontend/.env
+
+# Laravel
+backend/storage/logs/*.log
+backend/storage/framework/cache/
+backend/storage/framework/views/
+backend/storage/framework/sessions/
+backend/bootstrap/cache/*.php
+
+# Build
+frontend/dist/
+
+# Docker
+*.sock
