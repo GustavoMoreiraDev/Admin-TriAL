@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+# Worker e scheduler não precisam rodar setup completo
+if [ "${SKIP_SETUP}" = "true" ]; then
+    echo "==> [SKIP_SETUP] Pulando setup, iniciando serviço..."
+    exec "$@"
+fi
+
 echo "==> Gerando .env a partir das variáveis de ambiente do container..."
 cat > /var/www/.env <<EOF
 APP_NAME=${APP_NAME:-TriAL}
@@ -56,8 +62,22 @@ php artisan key:generate --no-interaction --force
 echo "==> Publicando config do JWT..."
 php artisan vendor:publish --provider="PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider" --no-interaction 2>/dev/null || true
 
-echo "==> Gerando JWT secret..."
-php artisan jwt:secret --force --no-interaction 2>/dev/null || true
+# Se JWT_SECRET não foi fornecido, gera e persiste
+if [ -z "${JWT_SECRET}" ]; then
+    echo "==> JWT_SECRET não definido — gerando automaticamente..."
+    php artisan jwt:secret --force --no-interaction 2>/dev/null || true
+
+    JWT_SECRET=$(grep "^JWT_SECRET=" /var/www/.env | cut -d'=' -f2)
+    export JWT_SECRET
+
+    # Persiste no .env da raiz do projeto (montado via volume)
+    if [ -f /tmp/host.env ] && [ -n "${JWT_SECRET}" ]; then
+        echo "==> Gravando JWT_SECRET no .env do host..."
+        sed -i "s|^JWT_SECRET=.*|JWT_SECRET=${JWT_SECRET}|" /tmp/host.env
+    fi
+else
+    echo "==> JWT_SECRET já definido, pulando geração."
+fi
 
 echo "==> Executando migrations..."
 php artisan migrate --force --no-interaction
@@ -66,4 +86,4 @@ echo "==> Garantindo usuário root..."
 php artisan db:seed --class=RootUsuarioSeeder --force --no-interaction
 
 echo "==> Iniciando serviço..."
-exec "$@"
+exec env JWT_SECRET="${JWT_SECRET}" "$@"

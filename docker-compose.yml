@@ -1,3 +1,36 @@
+x-backend-env: &backend-env
+  APP_NAME: ${APP_NAME}
+  APP_ENV: ${APP_ENV}
+  APP_DEBUG: ${APP_DEBUG}
+  APP_TIMEZONE: ${APP_TIMEZONE}
+  APP_URL: ${APP_URL}
+  DB_CONNECTION: pgsql
+  DB_HOST: postgres
+  DB_PORT: 5432
+  DB_DATABASE: ${DB_DATABASE}
+  DB_USERNAME: ${DB_USERNAME}
+  DB_PASSWORD: ${DB_PASSWORD}
+  JWT_SECRET: ${JWT_SECRET}
+  JWT_ALGO: ${JWT_ALGO}
+  JWT_TTL: ${JWT_TTL}
+  JWT_REFRESH_TTL: ${JWT_REFRESH_TTL}
+  QUEUE_CONNECTION: ${QUEUE_CONNECTION}
+  MAIL_MAILER: ${MAIL_MAILER}
+  MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+  MAIL_FROM_NAME: ${MAIL_FROM_NAME}
+  ROOT_EMAIL: ${ROOT_EMAIL}
+  ROOT_SENHA: ${ROOT_SENHA}
+  ROOT_NOME: ${ROOT_NOME}
+  ROOT_TELEFONE: ${ROOT_TELEFONE}
+  ROOT_NASCIMENTO: ${ROOT_NASCIMENTO}
+  LOG_CHANNEL: stack
+  LOG_STACK: single
+  LOG_LEVEL: debug
+  APP_LOCALE: pt_BR
+  APP_FALLBACK_LOCALE: pt_BR
+  CACHE_STORE: file
+  SESSION_DRIVER: file
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -29,38 +62,9 @@ services:
     volumes:
       - ./backend:/var/www
       - backend_vendor:/var/www/vendor
+      - ./.env:/tmp/host.env
     environment:
-      APP_NAME: ${APP_NAME}
-      APP_ENV: ${APP_ENV}
-      APP_DEBUG: ${APP_DEBUG}
-      APP_TIMEZONE: ${APP_TIMEZONE}
-      APP_URL: ${APP_URL}
-      DB_CONNECTION: pgsql
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_ALGO: ${JWT_ALGO}
-      JWT_TTL: ${JWT_TTL}
-      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL}
-      QUEUE_CONNECTION: ${QUEUE_CONNECTION}
-      MAIL_MAILER: ${MAIL_MAILER}
-      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
-      MAIL_FROM_NAME: ${MAIL_FROM_NAME}
-      ROOT_EMAIL: ${ROOT_EMAIL}
-      ROOT_SENHA: ${ROOT_SENHA}
-      ROOT_NOME: ${ROOT_NOME}
-      ROOT_TELEFONE: ${ROOT_TELEFONE}
-      ROOT_NASCIMENTO: ${ROOT_NASCIMENTO}
-      LOG_CHANNEL: stack
-      LOG_STACK: single
-      LOG_LEVEL: debug
-      APP_LOCALE: pt_BR
-      APP_FALLBACK_LOCALE: pt_BR
-      CACHE_STORE: file
-      SESSION_DRIVER: file
+      <<: *backend-env
     depends_on:
       postgres:
         condition: service_healthy
@@ -71,6 +75,9 @@ services:
     <<: *backend
     container_name: trial_worker
     command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--timeout=60"]
+    environment:
+      <<: *backend-env
+      SKIP_SETUP: "true"
     depends_on:
       postgres:
         condition: service_healthy
@@ -79,6 +86,9 @@ services:
     <<: *backend
     container_name: trial_scheduler
     command: ["php", "artisan", "schedule:work"]
+    environment:
+      <<: *backend-env
+      SKIP_SETUP: "true"
     depends_on:
       postgres:
         condition: service_healthy

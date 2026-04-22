@@ -29,9 +29,9 @@ Não é necessário ter PHP, Node ou qualquer outra dependência instalada local
 ## Instalação e execução
 
 ```bash
-# 1. Clone o repositório
-git clone <url-do-repositorio>
-cd trial-fullstack
+# 1. Clone o repositório | Exemplo por SSH
+git clone git@github.com:GustavoMoreiraDev/Admin-TriAL.git
+cd admin-trial
 
 # 2. Copie o arquivo de configuração
 cp .env.example .env
